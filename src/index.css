@@ -5,9 +5,20 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+button {
+  color: white;
+}
+
+.content {
+  position: absolute;
+  top: 30%;
+  left: 30%
+}
+
+.check-box{
+  position: absolute;
+  margin-left: 30%;
 }
