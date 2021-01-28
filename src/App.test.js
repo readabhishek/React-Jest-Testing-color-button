@@ -1,5 +1,6 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import App from './App';
+import {replaceCamelWithSpaces} from './App';
 
 
 
@@ -7,8 +8,8 @@ import App from './App';
 
 test('Test Initial Color of Button', () => {
   render(<App />);
-  const ColorButton = screen.getByRole('button', {name: 'Click to change color to blue'});
-  expect(ColorButton).toHaveStyle({backgroundColor: 'red'});
+  const ColorButton = screen.getByRole('button', {name: 'Click to change color to Midnight Blue'});
+  expect(ColorButton).toHaveStyle({backgroundColor: 'MediumVioletRed'});
 });
 
 
@@ -17,9 +18,9 @@ test('Test Initial Color of Button', () => {
 
 test('Test Button Color as Blue after Click', () => {
   render(<App />);
-  const ColorButton = screen.getByRole('button', {name: 'Click to change color to blue'});
+  const ColorButton = screen.getByRole('button', {name: 'Click to change color to Midnight Blue'});
   fireEvent.click(ColorButton);
-  expect(ColorButton).toHaveStyle({backgroundColor: 'blue'});
+  expect(ColorButton).toHaveStyle({backgroundColor: 'MidnightBlue'});
 });
 
 
@@ -30,7 +31,7 @@ test("Check the initial conditions for Check box", () => {
 
   /* Checks that button is enabled initially */
   render(<App />);
-  const colorButton = screen.getByRole('button', {name: 'Click to change color to blue'});
+  const colorButton = screen.getByRole('button', {name: 'Click to change color to Midnight Blue'});
   expect(colorButton).toBeEnabled();
 
   /* Checks that check-box is un-checked initially */
@@ -48,7 +49,8 @@ test("Check if button disables after check-box checked and vice-versa", () => {
 
 
   const checkBox = screen.getByRole('checkbox', {name: 'Disable Button'});
-  const colorButton = screen.getByRole('button', {name: 'Click to change color to blue'});
+  /* Using String Template and Backtick character, output is same:   Midnight Blue  */
+  const colorButton = screen.getByRole('button', {name: `Click to change color to ${replaceCamelWithSpaces('MidnightBlue')}`});
 
   /* Fire events - Make the check-box checked */
   fireEvent.click(checkBox);
@@ -70,7 +72,7 @@ test("Check if button disables after check-box checked and vice-versa", () => {
 test("Check if button turns gray after disable and vice versa", () => {
   render(<App />);
   const checkBox = screen.getByRole('checkbox', {name: 'Disable Button'});
-  const colorButton = screen.getByRole('button', {name: 'Click to change color to blue'});
+  const colorButton = screen.getByRole('button', {name: 'Click to change color to Midnight Blue'});
 
   /* default not gray */
   expect(colorButton).not.toHaveStyle({backgroundColor: 'gray'});
@@ -88,9 +90,25 @@ test("Check if button turns gray after disable and vice versa", () => {
   expect(colorButton).toBeEnabled();
 
   /* Below code checks if the button goes back to red or blue color after being enabled */
-  expect(colorButton).toHaveStyle({backgroundColor: 'red' || 'blue'});
+  expect(colorButton).toHaveStyle({backgroundColor: 'MediumVioletRed' || 'MidnightBlue'});
   expect(colorButton).not.toHaveStyle({backgroundColor: 'gray'});
 
 });
 
 
+/*
+*  describe() is used to group multiple tests together. Here within each tests, we are calling a function - replaceCamelWithSpaces()
+*  which is defined inside App.js. We are testing that the function returns the correct string (color name)
+* */
+describe("Spaces before camel case characters ", ()=> {
+  test("Works for no inner capital letters", ()=>{
+    expect(replaceCamelWithSpaces('Red')).toBe('Red');
+  });
+  test("Works for one inner capital letters", ()=>{
+    expect(replaceCamelWithSpaces('MidnightBlue')).toBe('Midnight Blue');
+  });
+  test("Works for multiple inner capital letters", ()=>{
+    expect(replaceCamelWithSpaces('MediumVioletRed')).toBe('Medium Violet Red');
+  });
+
+});

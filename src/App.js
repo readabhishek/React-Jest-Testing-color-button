@@ -2,13 +2,17 @@ import './App.css';
 import {useState, useEffect} from 'react';
 
 
+export function replaceCamelWithSpaces(colorName) {
+    return colorName.replace(/\B([A-Z])\B/g, ' $1');
+}
+
 function App() {
 
-    const [btnColor, setBtnColor] = useState('red');
-    const [oldBtnColor, setOldBtnColor] = useState('red');
+    const [btnColor, setBtnColor] = useState('MediumVioletRed');
+    const [oldBtnColor, setOldBtnColor] = useState('MediumVioletRed');
     const [checked, setChecked] = useState(false);
 
-    let newBtnColor = btnColor === 'gray' ? (oldBtnColor === 'red'? 'blue' : 'red') : (btnColor === 'red' ? 'blue' : 'red');
+    let newBtnColor = btnColor === 'gray' ? (oldBtnColor === 'MediumVioletRed'? 'MidnightBlue' : 'MediumVioletRed') : (btnColor === 'MediumVioletRed' ? 'MidnightBlue' : 'MediumVioletRed');
 
 
     /* This is React hook, combination of ComponentDidMount and ComponentDidUpdate. This is used
@@ -20,29 +24,28 @@ function App() {
         } else {
             if (btnColor === 'gray') {
                 setBtnColor(oldBtnColor);
-                newBtnColor = btnColor === 'red' ? 'blue' : 'red';
+                newBtnColor = btnColor === 'MediumVioletRed' ? 'MidnightBlue' : 'MediumVioletRed';
             } else {
                 setOldBtnColor(btnColor);
-                newBtnColor = btnColor === 'red' ? 'blue' : 'red';
+                newBtnColor = btnColor === 'MediumVioletRed' ? 'MidnightBlue' : 'MediumVioletRed';
             }
         }
 
     }, [checked])
 
 
-
     return (
 
         <div id='mainDiv' className="content">
             <button id='btn' style={{backgroundColor: btnColor}}
-                    onClick={() => {setBtnColor(newBtnColor)}} disabled={checked}>Click to change color to {newBtnColor} </button>
+                    onClick={() => {setBtnColor(newBtnColor)}} disabled={checked}>Click to change color to {replaceCamelWithSpaces(newBtnColor)} </button>
             <div className="check-box">
                 <input
                     type="checkbox" id="chk1" name="chk1" value="false" onChange={(e) => {setChecked(e.target.checked)}}/>
                 <label htmlFor="chk1">Disable Button</label>
             </div>
         </div>
-);
+    );
 }
 
 export default App;
